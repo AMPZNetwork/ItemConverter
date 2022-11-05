@@ -24,6 +24,6 @@ TERMS AND CONDITIONS
 5. You are not allowed to repack my mod* or parts***** of it without my permission******.
  
 *: "My mod" refers to the mod licensed under this license and any parts** of it.
-***: The "official download source" is CurseForge or Modrinth [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ore-dictionary-converter) | [Modrinth](https://modrinth.com/mod/oredictionaryconverter).
+***: The "official download source" is CurseForge or Modrinth [CurseForge](https://www.curseforge.com/minecraft/mc-mods/ore-dictionary-converter) | [Modrinth](https://modrinth.com/mod/oredictionaryconverter).<br>
 *****: "Parts" of my mod* are any resources (images, sounds, etc.) and the mod code. 
 ******: You can ask me for permission via [Discord](https://discord.gg/enrpMDd).
