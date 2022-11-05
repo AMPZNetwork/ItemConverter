@@ -11,9 +11,7 @@ Don't ship my mod with your modpack, let users or your mod download my mod from 
  
 TERMS AND CONDITIONS
  
-1. You are allowed to use my mod* for your own project.
-
-1.1. If you are using my mod* you must to link to the official download source***.
+1. If you are using my mod* you must to link to the official download source***.
 
 1.2. If your project automatically downloads my mod*, my mod* needs to be downloaded from the official download source*** at the user end.
 
