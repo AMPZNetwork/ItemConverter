@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "itemconverter:block/converter_block"
+    }
+  }
+}
