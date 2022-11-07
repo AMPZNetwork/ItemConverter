@@ -2,16 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "group": "converter_item",
   "key": {
-    "C": {"item": "itemconverter:converter_item"},
-    "W": {"item": "minecraft:oxidized_copper"},
-    "E": {"item": "minecraft:ender_pearl"}
+    "C": {
+      "item": "itemconverter:converter_item"
+    },
+    "W": {
+      "item": "minecraft:oxidized_copper"
+    },
+    "E": {
+      "item": "minecraft:ender_pearl"
+    }
   },
   "pattern": [
     "WEW",
     "ECE",
     "WEW"
   ],
-  "result":{
+  "result": {
     "count": 1,
     "item": "itemconverter:converter_block"
   }

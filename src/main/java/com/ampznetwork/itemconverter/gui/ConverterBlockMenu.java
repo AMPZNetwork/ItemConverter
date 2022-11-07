@@ -27,8 +27,8 @@ public class ConverterBlockMenu extends AbstractContainerMenu {
 
         this.stillValid = stillValid;
 
-        addSlot(new SlotItemHandler(dataInventory,0,50,20));
-        addSlot(new Slot(playerInventory,1,100,0));
+        addSlot(new SlotItemHandler(dataInventory, 0, 50, 20));
+        addSlot(new Slot(playerInventory, 1, 100, 0));
     }
 
     @Override

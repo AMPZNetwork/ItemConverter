@@ -6,51 +6,46 @@ import com.ampznetwork.itemconverter.gui.ConverterBlockMenu;
 import com.ampznetwork.itemconverter.gui.ConverterBlockScreen;
 import com.ampznetwork.itemconverter.item.ConverterItem;
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(ItemConverter.MODID)
 @Mod.EventBusSubscriber(modid = ItemConverter.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ItemConverter
-{
+public class ItemConverter {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "itemconverter";
-    // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
     public static final DeferredRegister<Item> ITEMS;
     public static final DeferredRegister<Block> BLOCKS;
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES;
     public static final DeferredRegister<MenuType<?>> MENUS;
-
     public static final RegistryObject<ConverterBlock> converter_block;
     public static final RegistryObject<BlockItem> converter_block_item;
     public static final RegistryObject<ConverterItem> converter_item;
     public static final RegistryObject<BlockEntityType<ConverterBlockEntity>> converter_block_entity_type;
     public static final RegistryObject<MenuType<ConverterBlockMenu>> converter_block_menu_type;
+    // Directly reference a slf4j logger
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     static {
         ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
@@ -66,8 +61,7 @@ public class ItemConverter
         converter_block_menu_type = MENUS.register("converter_block_menu", () -> IForgeMenuType.create(ConverterBlockMenu::new));
     }
 
-    public ItemConverter()
-    {
+    public ItemConverter() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register the commonSetup method for modloading
@@ -82,22 +76,27 @@ public class ItemConverter
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        // Some client setup code
+        MenuScreens.register(converter_block_menu_type.get(), ConverterBlockScreen::new);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
+    public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
     }
 
     @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event)
-    {
-        // Some client setup code
-        MenuScreens.register(converter_block_menu_type.get(), ConverterBlockScreen::new);
+    public void onPlayerRightClick(net.minecraftforge.event.entity.player.PlayerInteractEvent event) {
+        Optional<ConverterBlockEntity> entityOpt = event.getLevel().getBlockEntity(event.getPos(), converter_block_entity_type.get());
+        if (entityOpt.isEmpty() || !(event.getEntity() instanceof ServerPlayer plr))
+            return;
+        entityOpt.get().openMenu(plr);
     }
 }

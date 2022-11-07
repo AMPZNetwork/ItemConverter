@@ -2,16 +2,22 @@
   "type": "minecraft:crafting_shaped",
   "group": "converter_item",
   "key": {
-    "I": {"item": "minecraft:iron_ingot"},
-    "C": {"item": "minecraft:copper_ingot"},
-    "W": {"item": "minecraft:oxidized_copper"}
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "W": {
+      "item": "minecraft:oxidized_copper"
+    }
   },
   "pattern": [
     "ICI",
     "CWC",
     "ICI"
   ],
-  "result":{
+  "result": {
     "count": 1,
     "item": "itemconverter:converter_item"
   }
