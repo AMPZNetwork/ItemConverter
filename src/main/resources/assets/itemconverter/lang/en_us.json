@@ -1,4 +1,4 @@
 {
-  "item.itemconverter.converter": "Item Converter",
-  "block.itemconverter.converter": "Automatic Item Converter"
+  "item.itemconverter.converter_item": "Item Converter",
+  "block.itemconverter.converter_block": "Automatic Item Converter"
 }
