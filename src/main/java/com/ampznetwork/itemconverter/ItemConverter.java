@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -90,13 +91,5 @@ public class ItemConverter {
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
-    }
-
-    @SubscribeEvent
-    public void onPlayerRightClick(net.minecraftforge.event.entity.player.PlayerInteractEvent event) {
-        Optional<ConverterBlockEntity> entityOpt = event.getLevel().getBlockEntity(event.getPos(), converter_block_entity_type.get());
-        if (entityOpt.isEmpty() || !(event.getEntity() instanceof ServerPlayer plr))
-            return;
-        entityOpt.get().openMenu(plr);
     }
 }
