@@ -1,11 +1,11 @@
 package com.ampznetwork.itemconverter.gui;
 
 import com.ampznetwork.itemconverter.ItemConverter;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -13,6 +13,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 import java.util.function.Function;
+
+import static com.ampznetwork.itemconverter.gui.ConverterBlockScreen.*;
 
 public class ConverterBlockMenu extends AbstractContainerMenu {
     private final Function<Player, Boolean> stillValid;
@@ -28,8 +30,10 @@ public class ConverterBlockMenu extends AbstractContainerMenu {
 
         this.stillValid = stillValid;
 
-        addSlot(new SlotItemHandler(dataInventory, 0, 50, 20));
-        addSlot(new Slot(playerInventory, 1, 100, 0));
+        addSlot(new SlotItemHandler(dataInventory, 0, (int)((double)9 * SLOT_SIZE / 2 - 30), -20));
+        addSlot(new SlotItemHandler(dataInventory, 1, (int)((double)9 * SLOT_SIZE / 2 + 30), -20));
+        for (int i = 0; i < 4*9; i++)
+            addSlot(new Slot(playerInventory, i, i % 9 * SLOT_SIZE, i / 9 * SLOT_SIZE + INVENTORY_OFFSET));
     }
 
     @Override
