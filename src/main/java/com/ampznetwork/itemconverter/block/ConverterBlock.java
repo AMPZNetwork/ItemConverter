@@ -32,7 +32,9 @@ public class ConverterBlock extends Block implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return type == ItemConverter.converter_block_entity_type.get() ? ConverterBlockEntity::tick : null;
+        return type == ItemConverter.converter_block_entity_type.get()
+                ? (level1, blockPos, blockState, blockEntity) -> ((ConverterBlockEntity)blockEntity).tick(level1, blockPos, blockState)
+                : null;
     }
 
     @Override

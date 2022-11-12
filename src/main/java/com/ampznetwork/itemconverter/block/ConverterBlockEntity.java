@@ -3,15 +3,10 @@ package com.ampznetwork.itemconverter.block;
 import com.ampznetwork.itemconverter.ItemConverter;
 import com.ampznetwork.itemconverter.gui.ConverterBlockMenu;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
@@ -19,8 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
 
 public class ConverterBlockEntity extends BlockEntity {
     private final MenuProvider MENU_PROVIDER = new SimpleMenuProvider(
@@ -31,7 +24,7 @@ public class ConverterBlockEntity extends BlockEntity {
         super(ItemConverter.converter_block_entity_type.get(), pos, state);
     }
 
-    public static void tick(Level level, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity) {
+    public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         // todo do stuff on tick
     }
 
