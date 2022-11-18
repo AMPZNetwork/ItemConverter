@@ -59,7 +59,8 @@ public class ItemConverter {
         converter_item = ITEMS.register("converter_item", ConverterItem::new);
         converter_block_entity_type = BLOCK_ENTITY_TYPES.register("converter_block_entity", () ->
                 BlockEntityType.Builder.of(ConverterBlockEntity::new, converter_block.get()).build(null));
-        converter_block_menu_type = MENUS.register("converter_block_menu", () -> IForgeMenuType.create(ConverterBlockMenu::new));
+        converter_block_menu_type = MENUS.register("converter_block_menu", () -> IForgeMenuType.create((containerId, playerInventory, extraData)
+                -> new ConverterBlockMenu(null, containerId, playerInventory, extraData)));
     }
 
     public ItemConverter() {

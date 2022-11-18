@@ -1,8 +1,9 @@
 package com.ampznetwork.itemconverter.gui;
 
 import com.ampznetwork.itemconverter.ItemConverter;
-import net.minecraft.client.gui.screens.Screen;
+import com.ampznetwork.itemconverter.block.ConverterBlockEntity;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -12,26 +13,42 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import static com.ampznetwork.itemconverter.gui.ConverterBlockScreen.*;
 
 public class ConverterBlockMenu extends AbstractContainerMenu {
+
+    private final IItemHandler dataInventory;
     private final Function<Player, Boolean> stillValid;
+    private final ConverterBlockEntity block;
 
     //client
-    public ConverterBlockMenu(int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
-        this(containerId, playerInventory, new ItemStackHandler(2), extraData, ($) -> true);
+    public ConverterBlockMenu(ConverterBlockEntity block, int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
+        this(
+                block,
+                containerId,
+                playerInventory,
+                Optional.of(block)
+                        .map(ConverterBlockEntity::getDataInventory)
+                        .orElseGet(() -> new ItemStackHandler(3)),
+                extraData,
+                ($) -> true
+        );
     }
 
     //server
-    public ConverterBlockMenu(int containerId, Inventory playerInventory, IItemHandler dataInventory, FriendlyByteBuf extraData, Function<Player, Boolean> stillValid) {
+    public ConverterBlockMenu(ConverterBlockEntity block, int containerId, Inventory playerInventory, IItemHandler dataInventory, FriendlyByteBuf extraData, Function<Player, Boolean> stillValid) {
         super(ItemConverter.converter_block_menu_type.get(), containerId);
 
+        this.block = block;
+        this.dataInventory = dataInventory;
         this.stillValid = stillValid;
 
-        addSlot(new SlotItemHandler(dataInventory, 0, (int)((double)9 * SLOT_SIZE / 2 - 30), -20));
-        addSlot(new SlotItemHandler(dataInventory, 1, (int)((double)9 * SLOT_SIZE / 2 + 30), -20));
+        addSlot(new SlotItemHandler(dataInventory, ConverterBlockEntity.SlotConfig, 0,0));
+        addSlot(new SlotItemHandler(dataInventory, ConverterBlockEntity.SlotInput, (int)((double)9 * SLOT_SIZE / 2 - 30), -20));
+        addSlot(new SlotItemHandler(dataInventory, ConverterBlockEntity.SlotOutput, (int)((double)9 * SLOT_SIZE / 2 + 30), -20));
         for (int i = 0; i < 4*9; i++)
             addSlot(new Slot(playerInventory, i, i % 9 * SLOT_SIZE, i / 9 * SLOT_SIZE + INVENTORY_OFFSET));
     }
@@ -59,7 +76,7 @@ public class ConverterBlockMenu extends AbstractContainerMenu {
     */
 
             // If the quick move was performed on the data inventory result slot
-            if (quickMovedSlotIndex == 0) {
+            if (quickMovedSlotIndex == ConverterBlockEntity.SlotOutput) {
                 // Try to move the result slot into the player inventory/hotbar
                 if (!this.moveItemStackTo(rawStack, 5, 41, true)) {
                     // If cannot move, no longer quick move
@@ -72,7 +89,7 @@ public class ConverterBlockMenu extends AbstractContainerMenu {
             // Else if the quick move was performed on the player inventory or hotbar slot
             else if (quickMovedSlotIndex >= 5 && quickMovedSlotIndex < 41) {
                 // Try to move the inventory/hotbar slot into the data inventory input slots
-                if (!this.moveItemStackTo(rawStack, 1, 5, false)) {
+                if (!this.moveItemStackTo(rawStack, ConverterBlockEntity.SlotInput, 5, false)) {
                     // If cannot move and in player inventory slot, try to move to hotbar
                     if (quickMovedSlotIndex < 32) {
                         if (!this.moveItemStackTo(rawStack, 32, 41, false)) {
